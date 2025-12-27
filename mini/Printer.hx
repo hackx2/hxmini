@@ -2,9 +2,27 @@ package mini;
 
 using StringTools;
 
+/**
+ * TODO
+ */
+@:nullSafety(Strict)
 class Printer {
+	/**
+	 * Mirror of `Printer.serialize(x)`
+	 * @param doc The given `Ini` document.
+	 * @return Serialized `Ini` document, expressed as a string.
+	 */
+	@:noUsing static public function print(doc:Ini):String {
+		return Printer.serialize(doc);
+	}
+
+	/**
+	 * Mirror of `Printer.serialize(x)`
+	 * @param doc The given `Ini` document.
+	 * @return Serialized `Ini` document, expressed as a string.
+	 */
 	@:noUsing static public function stringify(doc:Ini):String {
-		return serialize(doc);
+		return Printer.serialize(doc);
 	}
 	
 	@:noUsing static public function serialize(doc:Ini):String {
@@ -20,7 +38,7 @@ class Printer {
 						switch (kv.nodeType) {
 							case KeyValue:
 								stringBuffer.add(kv.nodeName + "=");
-								stringBuffer.add(Utils.wrapMultiline(kv.nodeValue));
+								stringBuffer.add(Utils.wrapMultiline(kv.nodeValue ?? ''));
 								stringBuffer.add("\n");
 							case Comment:
 								stringBuffer.add("; " + kv.nodeValue);
@@ -34,7 +52,7 @@ class Printer {
 					stringBuffer.add("\n");
 				case KeyValue:
 					stringBuffer.add(c.nodeName + "=");
-					stringBuffer.add(Utils.wrapMultiline(c.nodeValue));
+					stringBuffer.add(Utils.wrapMultiline((c.nodeValue ?? '')));
 					stringBuffer.add("\n");
 				case DangerousInner:
 					stringBuffer.add(c.nodeValue);

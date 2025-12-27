@@ -1,25 +1,25 @@
 package mini.types;
 
 enum abstract EntryType(Int) {
-	final Document:EntryType = 0x00; // 0
+	final Document:EntryType = 0; // 0
 
 	/**
 	 * Section
 	 * Example: [BlahBlahBlah]
 	 */
-	final Section:EntryType = 0x01; // 1
+	final Section:EntryType = 1; // 1
 
 	/**
 	 * Comment
 	 * Example: `; BlahBlahBlah` or `# BlahBlahBlah`.
 	 */
-	final Comment:EntryType = 0x02; // 2
+	final Comment:EntryType = 2; // 2
 
 	/**
 	 * Key Value
 	 * Example: BlahBlahBlah = WhatTheSigma
 	 */
-	final KeyValue:EntryType = 0x03; // 3
+	final KeyValue:EntryType = 3; // 3
 
 	/**
 	 * This enum-like type is used for dangerously injecting data.
