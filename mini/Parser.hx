@@ -5,6 +5,7 @@ import haxe.extern.EitherType;
 
 using StringTools;
 
+@:nullSafety(Strict)
 class Parser {
 	@:deprecated public static function print(ini:Ini):String {
 		return ini.toString();
@@ -27,8 +28,8 @@ class Parser {
 	public static function parse(tokens:EitherType<String, Array<Token>>):Ini {
 		// !!! Support For previous versions of hxmini. !!!
 		final tokens:Array<Token> = tokens is String ? Lexer.tokenize(tokens) : cast tokens;
-
 		final doc:Ini = Ini.createDocument();
+
 		var currentSection:Ini = doc;
 
 		var i:Int = 0;
@@ -39,13 +40,13 @@ class Parser {
 					i++;
 
 				case Comment(comment):
-					 currentSection.addChild(new Ini(Comment, null, comment));
+					currentSection.addChild(new Ini(Comment, null, comment));
 					i++;
 
 				case Key(key):
 					i++;
 					if (i >= tokens.length || tokens[i] != Equals)
-						throw new Exception(ECustom('Expected "="(equals) after key "$key"'));
+						throw new Exception(ECustom('Expected "=" after key "$key"'));
 					i++;
 					if (i >= tokens.length)
 						throw new Exception(ECustom('Expected value after key "$key"'));

@@ -11,6 +11,7 @@ import mini.types.EntryType;
  * 
  * @see https://api.haxe.org/haxe/xml/Access.html
  */
+@:nullSafety(Strict)
 abstract Access(Ini) {
 	/**
 	 * The **Ini** class this **Access** `abstract` is bound to.
@@ -111,14 +112,14 @@ abstract Access(Ini) {
 	/**
 	 * Get the type of this `Ini` object.
 	 */
-	public var type(get,never):EntryType;
-	@:noCompletion inline function get_type():EntryType {
+	public var type(get,never):Null<EntryType>;
+	@:noCompletion inline function get_type():Null<EntryType> {
 		return this.nodeType;
 	}
 
 	public inline function new(i:Ini):Access {
 		if (i == null)
-			throw "Cannot wrap null Ini node.";
+			throw new Exception(ECustom("Cannot wrap null Ini node"));
 		this = i;
 	}
 
@@ -138,45 +139,48 @@ abstract Access(Ini) {
 	}
 }
 
+@:nullSafety(Strict)
 abstract KeyAccess(Ini) from Ini to Ini {
 	@:op(A.B)
-	public function res(v:String):String {
+	public function res(v:String):Null<String> {
 		if (this.nodeType != EntryType.Section)
-			throw 'Cannot get key "$v" from non section node: ${this.nodeType}';
+			throw new Exception(ECustom('Cannot get key "$v" from non section node: ${this.nodeType}'));
 		for (c in this.children) {
 			if (c.nodeType == EntryType.KeyValue && c.nodeName == v)
 				return c.nodeValue;
 		}
-		throw 'Key "$v" not found in section "${this.nodeName}"';
+		throw new Exception(ECustom('Key "$v" not found in section "${this.nodeName}"'));
 	}
 }
 
+@:nullSafety(Strict)
 abstract SectionAccess(Ini) from Ini to Ini {
 	@:op(A.B)
 	public function res(v:String):Access {
 		if (this.nodeType != EntryType.Document && this.nodeType != EntryType.Section)
-			throw 'Cannot get section "$v" from node type: ${this.nodeType}';
+			throw new Exception(ECustom('Cannot get section "$v" from node type: ${this.nodeType}'));
 		for (c in this.children) {
 			if (c.nodeType == EntryType.Section && c.nodeName == v)
 				return new Access(c);
 		}
-		throw 'Section "$v" not found under "${this.nodeName}"';
+		throw new Exception(ECustom('Section "$v" not found under "${this.nodeName}"'));
 	}
 }
 
+@:nullSafety(Strict)
 abstract HasAccess(Ini) from Ini {
 	public var key(get, never):HasKeyAccess;
-	@:noCompletion inline function get_key():HasKeyAccess return this;
-
+	inline function get_key():HasKeyAccess return this;
+	
 	public var section(get, never):HasSectionAccess;
-	@:noCompletion inline function get_section():HasSectionAccess return this;
+	inline function get_section():HasSectionAccess return this;
 }
 
 abstract HasKeyAccess(Ini) from Ini {
 	@:op(A.B)
 	public function res(v:String):Bool {
 		if (this.nodeType != EntryType.Section)
-			throw 'Cannot check key "$v" on non section node: ${this.nodeType}';
+			throw new Exception(ECustom('Cannot check key "$v" on non section node: ${this.nodeType}'));
 		for (c in this.children) {
 			if (c.nodeType == EntryType.KeyValue && c.nodeName == v)
 				return true;
@@ -189,7 +193,7 @@ abstract HasSectionAccess(Ini) from Ini {
 	@:op(A.B)
 	public function res(v:String):Bool {
 		if (this.nodeType != EntryType.Section && this.nodeType != EntryType.Document)
-			throw 'Cannot check section "$v" on node type: ${this.nodeType}';
+			throw new Exception(ECustom('Cannot check section "$v" on node type: ${this.nodeType}'));
 		for (c in this.children) {
 			if (c.nodeType == EntryType.Section && c.nodeName == v)
 				return true;

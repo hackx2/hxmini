@@ -6,25 +6,45 @@ using StringTools;
 using Lambda;
 
 /**
- * Used for reading and writing INI files.
+ * Represents a node inside of an **INI** document tree.
  * 
- * @see http://en.wikipedia.org/wiki/INI_file
+ * An `Ini` instance can be one of several types (`Document`, `Section`
+ * `KeyValue`, `Comment`) and **may** contain children nodes. 
+ * This class can be used to parse build, modify, and serialize INI files.
+ * 
+ * The tree-like structure is mutable: each node holds a reference to its `parent`
+ * and it's list of `children.
+ * 
+ * @see http://en.wikipedia.org/wiki/INI_file/
  */
 class Ini {
 	public var parent:Null<Ini>;
 
 	/**
-	 * The node type.
+	 * The type of this node.
+	 *
+	 * Determines whether this node represents a `Document`, `Section`,
+	 * `KeyValue`, or `Comment`.  
+	 * This value controls how the node behaves within the INI tree and
+	 * how it is serialized.
 	 */
 	public var nodeType(default, null):Null<EntryType>;
 
 	/**
-	 * The node's name.
+	 * The name associated with this node.
+	 *
+	 * For `Section` nodes, this is the section name.  
+	 * For `KeyValue` nodes, this is the key name.  
+	 * It is typically `null` for `Document` and `Comment` nodes.
 	 */
 	public var nodeName:Null<String>;
 
 	/**
-	 * The node's value.
+	 * The value associated with this node.
+	 *
+	 * Used primarily by `KeyValue` nodes to store the key's value.  
+	 * `Section` and `Document` nodes normally do not use this field, and it
+	 * may also be used for comment text depending on the implementation.
 	 */
 	public var nodeValue:Null<String>;
 
@@ -86,7 +106,9 @@ class Ini {
 	@:noCompletion var __disposed:Bool = false;
 
 	/**
-	 * Disposes this `Ini` node and all of its children.
+	 * Disposes this node and all of its descendants.
+	 *
+	 * After disposal, the node becomes unusable.
 	 */
 	public function dispose():Void {
 		if (__disposed)
@@ -167,12 +189,15 @@ class Ini {
 	}
 
 	/**
-	 * Get the value.
-	 * @param name the value.
-	 * @return String
+	 * Looks up a key within this section and returns its value.
+	 *
+	 * Only works when called on a `Section` node.
+	 * 
+	 * @param name The key name.
+	 * @return The value string, or `null` if the key does not exist.
 	 */
 	public function get(name:String):Null<String> {
-		if (nodeType == Section) {
+		if (nodeType == Section || nodeType == Document) {
 			for (c in children) {
 				if (c != null && c.nodeType == KeyValue && c.nodeName == name) {
 					return c.nodeValue;
