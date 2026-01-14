@@ -1,5 +1,6 @@
 package mini;
 
+import mini.types.CommentType;
 import mini.types.EntryType;
 
 using StringTools;
@@ -72,7 +73,8 @@ class Ini {
 		this.nodeType = type;
 		this.nodeName = name;
 		this.nodeValue = value;
-		this.children = new Array<Ini>();
+		if (isValidNodeType())
+			this.children = new Array<Ini>();
 		this.__disposed = false;
 	}
 
@@ -114,15 +116,17 @@ class Ini {
 		if (__disposed)
 			return;
 
-		if (children != null && children.length > 0) {
-			for (child in children) {
-				if (child != null) {
-					child.dispose();
+		if (children != null) {
+			if (children.length > 0) {
+				for (child in children) {
+					if (child != null) {
+						child.dispose();
+					}
 				}
 			}
+			if (children.length < 0)
+				children.resize(0);
 		}
-		if (children.length < 0)
-			children.resize(0);
 
 		parent = null;
 		nodeName = null;
@@ -141,6 +145,8 @@ class Ini {
 	 * @since 1.0.2
 	 */
 	public function dangerouslyInject(data:Dynamic) {
+		if (!isValidNodeType())
+			return;
 		addChild(new Ini(DangerousInner, null, data));
 	}
 
@@ -149,10 +155,15 @@ class Ini {
 	 * @param x child
 	 */
 	public function addChild<T:Ini>(x:T):T {
-		if (__disposed)
+		if (!isValidNodeType()) {
+			throw '`addChild` only functions when the node type is either `Document` or `Section`';
+		}
+		if (__disposed) {
 			return null;
-		if (x.parent != null)
+		}
+		if (x.parent != null) {
 			x.parent.removeChild(x);
+		}
 		children.push(x);
 		x.parent = this;
 		return x;
@@ -197,7 +208,7 @@ class Ini {
 	 * @return The value string, or `null` if the key does not exist.
 	 */
 	public function get(name:String):Null<String> {
-		if (nodeType == Section || nodeType == Document) {
+		if (isValidNodeType()) {
 			for (c in children) {
 				if (c != null && c.nodeType == KeyValue && c.nodeName == name) {
 					return c.nodeValue;
@@ -213,7 +224,7 @@ class Ini {
 	 * @param value The value.
 	 */
 	public function set(name:String, value:String):Void {
-		if (nodeType == Section) {
+		if (isValidNodeType()) {
 			for (c in children) {
 				if (c.nodeType == KeyValue && c.nodeName == name) {
 					c.nodeValue = value;
@@ -228,8 +239,10 @@ class Ini {
 	 * Create a comment.
 	 * @param value 
 	 */
-	public function comment(value:String):Void {
-		addChild(new Ini(Comment, null, value));
+	public function comment(value:String, type:CommentType = CommentType.SEMICOLON):Void {
+		if (!isValidNodeType())
+			return;
+		addChild(new Ini(Comment(type), null, value));
 	}
 
 	/**
@@ -269,7 +282,7 @@ class Ini {
 	 * Returns an iterator of all child comments.
 	 */
 	public function comments():Iterator<Ini> {
-		return children.filter(c -> c.nodeType == Comment).iterator();
+		return children.filter(c -> Type.enumEq(c.nodeType, Comment())).iterator();
 	}
 
 	/**
@@ -279,6 +292,10 @@ class Ini {
 	 */
 	public function find(predicate:Ini->Bool):Array<Ini> {
 		return children.filter(predicate);
+	}
+
+	inline function isValidNodeType():Bool {
+		return nodeType == Document || nodeType == Section;
 	}
 }
 

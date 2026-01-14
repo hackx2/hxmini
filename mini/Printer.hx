@@ -40,15 +40,15 @@ class Printer {
 								stringBuffer.add(kv.nodeName + "=");
 								stringBuffer.add(Utils.wrapMultiline(kv.nodeValue ?? ''));
 								stringBuffer.add("\n");
-							case Comment:
-								stringBuffer.add("; " + kv.nodeValue);
+							case Comment(t):
+								stringBuffer.add('$t ' + kv.nodeValue);
 								stringBuffer.add("\n");
 							default:
 						}
 					}
 					stringBuffer.add("\n");
-				case Comment:
-					stringBuffer.add("; " + c.nodeValue);
+				case Comment(t):
+					stringBuffer.add('$t ' + c.nodeValue);
 					stringBuffer.add("\n");
 				case KeyValue:
 					stringBuffer.add(c.nodeName + "=");
