@@ -3,7 +3,9 @@ package tests;
 final class Creation extends Test {
 	@:noCompletion override function test():Null<Bool> {
 		final ini:Ini = Ini.createDocument();
-
+		ini.comment('owha', HASHTAG);
+		ini.set('owo', 'haii');
+		ini.comment('owha');
 		final general:Ini = Ini.createSection("General");
 		general.set("name", "CustomIni");
 		general.set("version", "1.0.0");

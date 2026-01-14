@@ -40,7 +40,7 @@ class Parser {
 					i++;
 
 				case Comment(comment):
-					currentSection.addChild(new Ini(Comment, null, comment));
+					currentSection.addChild(new Ini(Comment(), null, comment));
 					i++;
 
 				case Key(key):
