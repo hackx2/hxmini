@@ -6,9 +6,11 @@ final class Long extends Test {
 	@:noCompletion override function test():Null<Bool> {
 		final ini = Parser.parse(Resource.getString("testing_long_ini"));
 		for (section in ini.elements()) {
-			if (Type.enumEq(section.nodeType, Comment())) {
-				trace(section.nodeValue);
-				continue;
+			switch(section.nodeType){
+				case Comment(_):
+					trace(section.nodeType.getParameters()[0]);
+					continue;
+				default: // do nothing...
 			}
 			trace('[${section.nodeName}]');
 

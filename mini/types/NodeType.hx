@@ -4,6 +4,6 @@ enum NodeType {
 	Document;
 	Section;
 	KeyValue;
-	Comment(?type:CommentVariant); // type = ; | #
+	Comment(comment:String, ?type:CommentVariant); // type = ; | #
 	DangerousInner(data:String);
 }
