@@ -7,13 +7,15 @@ mkdir release
 copy LICENSE release\
 copy haxelib.json release\
 copy README.md release\
+copy .gitignore release\
 copy extraParams.hxml release\
 mkdir release\mini
 xcopy mini\*.hx release\mini\ /Y
+xcopy .resources release\.resources /E /I /Y
 pushd release
 7za a -tzip ..\release.zip *
 popd
 haxelib submit release.zip
-@REM del /q release.zip
+del /q release.zip
 rmdir /s /q release
 pause
