@@ -268,31 +268,35 @@ class Ini {
 	/**
 	 * Returns an iterator of all child sections.
 	 */
-public function sections():Iterator<Ini> {
-    return (children != null ? children.filter(c -> c.nodeType == Section) : []).iterator();
-}
+	public function sections():Iterator<Ini> {
+		return (children != null ? children.filter(c -> c.nodeType == Section) : []).iterator();
+	}
 
 	/**
 	 * Returns an iterator of all child key/value pairs.
 	 */
-public function keys():Iterator<Ini> {
-    return (children != null ? children.filter(c -> c.nodeType == KeyValue) : []).iterator();
-}
+	public function keys():Iterator<Ini> {
+		return (children != null ? children.filter(c -> c.nodeType == KeyValue) : []).iterator();
+	}
 
 	/**
 	 * Returns an iterator of all child comments.
 	 */
-public function comments():Iterator<Ini> {
-    return (children != null ? children.filter(c -> Type.enumEq(c.nodeType, Comment())) : []).iterator();
-}
+	public function comments():Iterator<Ini> {
+		return (children != null ? children.filter(c -> {
+			final nodeType = c.nodeType;
+			Type.enumEq(nodeType, Comment(nodeType.getParameters()[0], nodeType.getParameters()[1]));
+		}) : []).iterator();
+	}
+
 	/**
 	 * Finds all children matching a predicate.
 	 * @param predicate Function to test each node.
 	 * @return Array<Ini> of matching nodes.
 	 */
-public function find(predicate:Ini->Bool):Array<Ini> {
-    return children != null ? children.filter(predicate) : [];
-}
+	public function find(predicate:Ini->Bool):Array<Ini> {
+		return children != null ? children.filter(predicate) : [];
+	}
 
 	inline function isValidNodeType():Bool {
 		return nodeType == Document || nodeType == Section;

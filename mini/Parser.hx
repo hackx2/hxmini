@@ -23,7 +23,7 @@ class Parser {
                 case Identifier(_): doc.addChild(parseKeyValue());
                 case Comment(c):
                     next();
-                    doc.addChild(new Ini(NodeType.Comment(getCommentVariant(c))));
+                    doc.addChild(new Ini(Comment(c, getCommentVariant(c))));
                 case Newline: next();
                 case Eof: break;
                 default: throw new Exception(ECustom("Unexpected token at line " + line + ": " + Std.string(peek())));
@@ -55,7 +55,7 @@ class Parser {
                 case Identifier(_): section.addChild(parseKeyValue());
                 case Comment(c):
                     next();
-                    section.addChild(new Ini(NodeType.Comment(getCommentVariant(c))));
+                    section.addChild(new Ini(Comment(c, getCommentVariant(c))));
                 case Newline: next();
                 case SectionStart, Eof: return section;
                 default: throw new Exception(ECustom('Unexpected token inside section $sectionName at line $line: ${Std.string(peek())}'));

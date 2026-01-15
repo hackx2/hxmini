@@ -5,7 +5,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ## [Unreleased]
 
 ### Added
-
 - Added Comment type support (`#` or `;`) : [`b6e1c28...`](https://github.com/hackx2/hxmini/blob/b6e1c284e75e5aa9209ac56a39f3901800967537/mini/types/CommentType.hx)
 - Added [`Lexer`](https://github.com/Hackx2/hxmini/blob/905f768443ff294af722b5b85b3560812edf01ae/mini/Lexer.hx).
 - Added [`parseString`](https://github.com/Hackx2/hxmini/blob/905f768443ff294af722b5b85b3560812edf01ae/mini/Parser.hx#L41) to [`mini.Parser`](https://github.com/Hackx2/hxmini/blob/905f768443ff294af722b5b85b3560812edf01ae/mini/Parser.hx).
@@ -17,7 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
-- Rename `mini.types.NodeType` to `mini.types.NodeType`
+- Rename `mini.types.NodeType` to `mini.types.NodeType` [`4946e9e...`](https://github.com/hackx2/hxmini/blob/4946e9e408581e4dd4538fe8cc3556d29d621954/mini/types/NodeType.hx)
 - Rewrote [`mini.Parser.parse`](https://github.com/Hackx2/hxmini/blob/905f768443ff294af722b5b85b3560812edf01ae/mini/Parser.hx#L50) from scratch.
 - Moved [`mini.EntryType`](https://github.com/Hackx2/hxmini/blob/05a4698b7f296542219c4c62ca4d90f74db3293a/mini/EntryType.hx) to [`mini.types.EntryType`](https://github.com/Hackx2/hxmini/blob/05a4698b7f296542219c4c62ca4d90f74db3293a/mini/types/EntryType.hx).
 - Changed `static` method [`Utils.fixMultiline`](https://github.com/Hackx2/hxmini/blob/1f4e06f6e5ec8d19fffa69761bc69676ee1b0e39/mini/Utils.hx#L21) to [`Utils.wrapMultiline`](https://github.com/Hackx2/hxmini/blob/3d4986f79fe008df86dc63ce95343a3947da51b8/mini/Utils.hx#L26).
