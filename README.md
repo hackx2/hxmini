@@ -15,7 +15,7 @@
 <h2>Features :p</h2>
 <ul>
 <li><strong>Comment Support:</strong> Ignores nodes starting with a semicolon(<code>;</code>) or an hashtag (<code>#</code>).</li>
-<li><strong>Multi-line support:</strong> Allows you to define a node using triple quotation marks (<code>""" """</code>, <code>Multiline Test=\ possible\ hehe</code> )</li>
+<li><strong>Multi-line support:</strong> Allows you to define a node using triple quotation marks (<code>""" """</code>)</li>
 <li><strong>File Creation & Editing:</strong> Lets you create and edit .ini files</li>
 </ul>
 

@@ -2,9 +2,6 @@ package mini;
 
 using StringTools;
 
-/**
- * TODO
- */
 @:nullSafety(Strict)
 class Printer {
 	/**
@@ -30,15 +27,15 @@ class Printer {
 		final stringBuffer:StringBuf = new StringBuf();
 
 		for (c in doc.children) {
-			switch (c.nodeType) {
+			switch c.nodeType {
 				case Section:
 					stringBuffer.add('[${c.nodeName}]');
 					stringBuffer.add('\n');
 					for (kv in c.children) {
-						switch (kv.nodeType) {
+						switch kv.nodeType {
 							case KeyValue:
 								stringBuffer.add(kv.nodeName + "=");
-								stringBuffer.add(Utils.wrapMultiline(kv.nodeValue ?? ''));
+								@:nullSafety(Off) stringBuffer.add(Utils.wrapMultiline(kv.nodeValue ?? ''));
 								stringBuffer.add("\n");
 							case Comment(t):
 								stringBuffer.add('$t ' + kv.nodeValue);
@@ -52,10 +49,10 @@ class Printer {
 					stringBuffer.add("\n");
 				case KeyValue:
 					stringBuffer.add(c.nodeName + "=");
-					stringBuffer.add(Utils.wrapMultiline((c.nodeValue ?? '')));
+					@:nullSafety(Off) stringBuffer.add(Utils.wrapMultiline((c.nodeValue ?? '')));
 					stringBuffer.add("\n");
-				case DangerousInner:
-					stringBuffer.add(c.nodeValue);
+				case DangerousInner(dangerous):
+					stringBuffer.add(dangerous);
 					stringBuffer.add("\n");
 				default: // theoretically, this not be possible so this is kinda useless...
 			}

@@ -1,4 +1,4 @@
 package mini;
 
-@:deprecated("mini.EntryType was moved to mini.types.EntryType")
-typedef EntryType = mini.types.EntryType;
+@:deprecated("mini.EntryType was moved to mini.types.NodeType")
+typedef EntryType = mini.types.NodeType;

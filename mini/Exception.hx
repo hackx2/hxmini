@@ -15,7 +15,7 @@ class Exception extends haxe.Exception {
 	}
 
 	static function to(kind:ExceptionKind):String {
-		return switch (kind) {
+		return switch kind {
 			case EMalformedSection(key): 'Malformed section header "$key"';
 			case EUnknownLine: 'Unrecognized line format';
 			case EUnterminatedMultilineValue(key): 'Unterminated multiline value for key "$key"';

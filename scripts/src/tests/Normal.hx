@@ -13,7 +13,7 @@ final class Normal extends Test {
 		trace(main.get('meows'));
 		trace('"${main.get('multiline')}"');
 
-		final general:Ini = ini.elementsNamed("General").next();
+		final general:Ini = ini.elementsNamed("$General").next();
 		trace('[General]');
 		trace(general.get("version"));
 		trace(general.get("theme"));

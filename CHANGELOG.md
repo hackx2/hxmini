@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Changed
 
+- Rename `mini.types.NodeType` to `mini.types.NodeType`
 - Rewrote [`mini.Parser.parse`](https://github.com/Hackx2/hxmini/blob/905f768443ff294af722b5b85b3560812edf01ae/mini/Parser.hx#L50) from scratch.
 - Moved [`mini.EntryType`](https://github.com/Hackx2/hxmini/blob/05a4698b7f296542219c4c62ca4d90f74db3293a/mini/EntryType.hx) to [`mini.types.EntryType`](https://github.com/Hackx2/hxmini/blob/05a4698b7f296542219c4c62ca4d90f74db3293a/mini/types/EntryType.hx).
 - Changed `static` method [`Utils.fixMultiline`](https://github.com/Hackx2/hxmini/blob/1f4e06f6e5ec8d19fffa69761bc69676ee1b0e39/mini/Utils.hx#L21) to [`Utils.wrapMultiline`](https://github.com/Hackx2/hxmini/blob/3d4986f79fe008df86dc63ce95343a3947da51b8/mini/Utils.hx#L26).
@@ -24,6 +25,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Used [`StringTools.rtrim`](https://api.haxe.org/StringTools.html#rtrim) in [`mini.Parser.parse(v1)`](https://github.com/Hackx2/hxmini/blob/8f33ff8c85054055d07aee33c84f47fe2976f424/mini/Parser.hx#L48) instead of the `deprecated` method [`Utils.trim_right`](https://github.com/Hackx2/hxmini/blob/eaa04f6f49f45a75a0597e899fa591cf15a58b7e/mini/Utils.hx#L37)
 
 ### Removed
+- Removed `\ hi \ hi` multiline method...
 - `MINI_PUSH_ARTIFACTS` has now been removed...
 
 ### Deprecated

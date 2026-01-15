@@ -1,5 +1,7 @@
 package mini;
 
+using StringTools;
+
 /**
  * matter.ini's utility class.
  * 
@@ -36,16 +38,41 @@ final class Utils {
 	@:deprecated
 	public inline static function trim_right(s:String):String { // LET ME SLEEP PLEASE
 		var i:Int = (s.length - 1);
-		while (i >= 0 && isWhitespace(s.charAt(i))) { i--; }
+		while (i >= 0 && isWhitespace(s.charAt(i))) {
+			i--;
+		}
 		return s.substring(0, i + 1);
 	}
-	
+
 	/**
 	 * Wraps multiline strings.
 	 * @param b given string
 	 * @return wrapped string.
 	 */
-	public inline static function wrapMultiline(b:String):String { if (b == null || b.indexOf("\n") == -1) return b == null ? "" : b; return '"""\n$b\n"""'; }
+	@:noUsing public inline static function wrapMultiline(b:String):String {
+		if (b == null) return "";
+
+		var needsQuotes:Bool = false;
+
+		// Check whether it contains any special characters
+		for (i in 0...b.length) {
+			final code:Int = b.charCodeAt(i);
+			if (code == Unicode.NEW_LINE || code == Unicode.SPACE || code == Unicode.DOUBLE_QUOTE || code == Unicode.SINGLE_QUOTE) {
+				needsQuotes = true;
+				break;
+			}
+		}
+
+		if (needsQuotes) {
+			final escaped:String = b.replace("\"", "\\\"");
+			return '"${escaped}"';
+		}
+
+		return b;
+	}
+
 	@:deprecated("mini.Utils.fixMultiline is deprecated, use mini.Utils.wrapMultiline instead")
-	public static inline function fixMultiline(b:String):String { return Utils.wrapMultiline(b);}
+	public static inline function fixMultiline(b:String):String {
+		return Utils.wrapMultiline(b);
+	}
 }

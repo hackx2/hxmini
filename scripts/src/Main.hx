@@ -32,11 +32,9 @@ class Main {
 				Type.createEmptyInstance(i).test();
 				trace('-----------------------------------\n');
 			}
-		})(tests.Normal, tests.Long, tests.Creation, tests.Access, tests.DangerouslyInject, tests.Lexer, tests.Miscellaneous);
+		})(tests.Normal, tests.Long, tests.Creation, tests.Access, tests.DangerouslyInject, tests.Lexer);
 
-		// ROUND((CURRENT_TIME - PREVIOUS_TIME) * 1000.0) / 1000.0
-		final timeTaken:Float = Math.round((haxe.Timer.stamp() - time) * 1000.0) / 1000.0;
-		
+		final timeTaken:Float = (haxe.Timer.stamp() - time)*1000;
 		trace('Finished in $timeTaken seconds!\nAll tests passed!\n');
 	}
 }

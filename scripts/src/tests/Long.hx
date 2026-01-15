@@ -21,7 +21,7 @@ final class Long extends Test {
 			if (i > 1)
 				trace('');
 
-			for (child in section.find(node -> node.nodeName == "welcome message")) {
+			for (child in section.find(node -> node.nodeName == "welcome_message")) {
 				trace("FOUND IT: " + child.nodeValue);
 			}
 		}
