@@ -1,7 +1,7 @@
 package mini;
 
 import mini.Ini;
-import mini.types.EntryType;
+import mini.types.NodeType;
 
 /**
  * This API provides dot-access to commonly used `mini.Ini` methods, this class is inspired by [`haxe.xml.Access`](https://api.haxe.org/haxe/xml/Access.html).
@@ -98,7 +98,10 @@ abstract Access(Ini) {
 	 */
 	public var value(get, never):Null<String>;
 	@:noCompletion inline function get_value():Null<String> {
-		return this.nodeValue;
+		return switch this.nodeType {
+			case Comment(comment): comment;
+			default: this.nodeValue;
+		}
 	}
 
 	/**
@@ -112,8 +115,8 @@ abstract Access(Ini) {
 	/**
 	 * Get the type of this `Ini` object.
 	 */
-	public var type(get,never):Null<EntryType>;
-	@:noCompletion inline function get_type():Null<EntryType> {
+	public var type(get,never):Null<NodeType>;
+	@:noCompletion inline function get_type():Null<NodeType> {
 		return this.nodeType;
 	}
 
@@ -143,10 +146,10 @@ abstract Access(Ini) {
 abstract KeyAccess(Ini) from Ini to Ini {
 	@:op(A.B)
 	public function res(v:String):Null<String> {
-		if (this.nodeType != EntryType.Section)
+		if (this.nodeType != NodeType.Section)
 			throw new Exception(ECustom('Cannot get key "$v" from non section node: ${this.nodeType}'));
 		for (c in this.children) {
-			if (c.nodeType == EntryType.KeyValue && c.nodeName == v)
+			if (c.nodeType == NodeType.KeyValue && c.nodeName == v)
 				return c.nodeValue;
 		}
 		throw new Exception(ECustom('Key "$v" not found in section "${this.nodeName}"'));
@@ -157,10 +160,10 @@ abstract KeyAccess(Ini) from Ini to Ini {
 abstract SectionAccess(Ini) from Ini to Ini {
 	@:op(A.B)
 	public function res(v:String):Access {
-		if (this.nodeType != EntryType.Document && this.nodeType != EntryType.Section)
+		if (this.nodeType != NodeType.Document && this.nodeType != NodeType.Section)
 			throw new Exception(ECustom('Cannot get section "$v" from node type: ${this.nodeType}'));
 		for (c in this.children) {
-			if (c.nodeType == EntryType.Section && c.nodeName == v)
+			if (c.nodeType == NodeType.Section && c.nodeName == v)
 				return new Access(c);
 		}
 		throw new Exception(ECustom('Section "$v" not found under "${this.nodeName}"'));
@@ -179,10 +182,10 @@ abstract HasAccess(Ini) from Ini {
 abstract HasKeyAccess(Ini) from Ini {
 	@:op(A.B)
 	public function res(v:String):Bool {
-		if (this.nodeType != EntryType.Section)
+		if (this.nodeType != NodeType.Section)
 			throw new Exception(ECustom('Cannot check key "$v" on non section node: ${this.nodeType}'));
 		for (c in this.children) {
-			if (c.nodeType == EntryType.KeyValue && c.nodeName == v)
+			if (c.nodeType == NodeType.KeyValue && c.nodeName == v)
 				return true;
 		}
 		return false;
@@ -192,10 +195,10 @@ abstract HasKeyAccess(Ini) from Ini {
 abstract HasSectionAccess(Ini) from Ini {
 	@:op(A.B)
 	public function res(v:String):Bool {
-		if (this.nodeType != EntryType.Section && this.nodeType != EntryType.Document)
+		if (this.nodeType != NodeType.Section && this.nodeType != NodeType.Document)
 			throw new Exception(ECustom('Cannot check section "$v" on node type: ${this.nodeType}'));
 		for (c in this.children) {
-			if (c.nodeType == EntryType.Section && c.nodeName == v)
+			if (c.nodeType == NodeType.Section && c.nodeName == v)
 				return true;
 		}
 		return false;

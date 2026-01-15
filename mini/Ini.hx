@@ -1,7 +1,7 @@
 package mini;
 
-import mini.types.CommentType;
-import mini.types.EntryType;
+import mini.types.CommentVariant;
+import mini.types.NodeType;
 
 using StringTools;
 using Lambda;
@@ -29,7 +29,7 @@ class Ini {
 	 * This value controls how the node behaves within the INI tree and
 	 * how it is serialized.
 	 */
-	public var nodeType(default, null):Null<EntryType>;
+	public var nodeType(default, null):Null<NodeType>;
 
 	/**
 	 * The name associated with this node.
@@ -69,7 +69,7 @@ class Ini {
 	 * @param name Name (Used for sections)
 	 * @param value Value (Used for key values)
 	 */
-	public function new(type:EntryType, ?name:String, ?value:String):Void {
+	public function new(type:NodeType, ?name:String, ?value:String):Void {
 		this.nodeType = type;
 		this.nodeName = name;
 		this.nodeValue = value;
@@ -147,7 +147,7 @@ class Ini {
 	public function dangerouslyInject(data:Dynamic) {
 		if (!isValidNodeType())
 			return;
-		addChild(new Ini(DangerousInner, null, data));
+		addChild(new Ini(DangerousInner(data)));
 	}
 
 	/**
@@ -156,6 +156,7 @@ class Ini {
 	 */
 	public function addChild<T:Ini>(x:T):T {
 		if (!isValidNodeType()) {
+			trace(nodeType);
 			throw '`addChild` only functions when the node type is either `Document` or `Section`';
 		}
 		if (__disposed) {
@@ -239,7 +240,7 @@ class Ini {
 	 * Create a comment.
 	 * @param value 
 	 */
-	public function comment(value:String, type:CommentType = CommentType.SEMICOLON):Void {
+	public function comment(value:String, type:CommentVariant = CommentVariant.SEMICOLON):Void {
 		if (!isValidNodeType())
 			return;
 		addChild(new Ini(Comment(type), null, value));
@@ -267,37 +268,36 @@ class Ini {
 	/**
 	 * Returns an iterator of all child sections.
 	 */
-	public function sections():Iterator<Ini> {
-		return children.filter(c -> c.nodeType == Section).iterator();
-	}
+public function sections():Iterator<Ini> {
+    return (children != null ? children.filter(c -> c.nodeType == Section) : []).iterator();
+}
 
 	/**
 	 * Returns an iterator of all child key/value pairs.
 	 */
-	public function keys():Iterator<Ini> {
-		return children.filter(c -> c.nodeType == KeyValue).iterator();
-	}
+public function keys():Iterator<Ini> {
+    return (children != null ? children.filter(c -> c.nodeType == KeyValue) : []).iterator();
+}
 
 	/**
 	 * Returns an iterator of all child comments.
 	 */
-	public function comments():Iterator<Ini> {
-		return children.filter(c -> Type.enumEq(c.nodeType, Comment())).iterator();
-	}
-
+public function comments():Iterator<Ini> {
+    return (children != null ? children.filter(c -> Type.enumEq(c.nodeType, Comment())) : []).iterator();
+}
 	/**
 	 * Finds all children matching a predicate.
 	 * @param predicate Function to test each node.
 	 * @return Array<Ini> of matching nodes.
 	 */
-	public function find(predicate:Ini->Bool):Array<Ini> {
-		return children.filter(predicate);
-	}
+public function find(predicate:Ini->Bool):Array<Ini> {
+    return children != null ? children.filter(predicate) : [];
+}
 
 	inline function isValidNodeType():Bool {
 		return nodeType == Document || nodeType == Section;
 	}
 }
 
-@:deprecated("Use mini.EntryType instead")
-typedef IniType = EntryType;
+@:deprecated("Use mini.NodeType instead")
+typedef IniType = NodeType;
