@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-01-15
+
 ### Added
 - Added Comment type support (`#` or `;`) : [`b6e1c28...`](https://github.com/hackx2/hxmini/blob/b6e1c284e75e5aa9209ac56a39f3901800967537/mini/types/CommentType.hx)
 - Added [`Lexer`](https://github.com/Hackx2/hxmini/blob/905f768443ff294af722b5b85b3560812edf01ae/mini/Lexer.hx).

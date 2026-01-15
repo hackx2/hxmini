@@ -1,7 +1,9 @@
 <br>
 <br>
 <div align="center">
-<img src="https://raw.githubusercontent.com/Hackx2/hxmini/refs/heads/main/.resources/logo-noir-ini.png" alt="Matter" width="60%" />
+
+![e](/.resources/logo-noir-ini-es.png)
+
 <p>
 <strong>Matter.ini 🌌</strong> is a lightweight and simple library for parsing <code>.ini</code> data. <br>It offers an easy way to read, modify, and create your own <code>.ini</code> data.
 
