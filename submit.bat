@@ -10,7 +10,7 @@ copy README.md release\
 copy .gitignore release\
 copy extraParams.hxml release\
 mkdir release\mini
-xcopy mini\*.hx release\mini\ /Y
+xcopy mini\*.hx release\mini\ /E /I /Y
 xcopy .resources release\.resources /E /I /Y
 pushd release
 7za a -tzip ..\release.zip *
