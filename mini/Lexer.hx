@@ -121,17 +121,21 @@ class Lexer {
 
 	function readString(quote:Int):Token {
 		final buf:StringBuf = new StringBuf();
-		final isTriple:Bool = peek() == quote && pos + 1 < data.length && data.fastCodeAt(pos + 1) == quote;
+		final isTriple:Bool = peek() != -1 && peek() == quote && pos + 1 < data.length && data.fastCodeAt(pos + 1) == quote;
 
 		if (isTriple) {
 			pos += 2; // skip extra quotes
 		}
 
-		while (pos < data.length) {
+		while (true) {
+			if (pos >= data.length) {
+				throw new Exception(ECustom('Unexpected end of input: unclosed ${isTriple ? "triple-quoted" : "single-quoted"} string starting at line ${line}')); //bwah
+			}
+
 			final code:Int = next();
 
 			// End of triple-quoted string
-			if (isTriple && code == quote && peek() == quote && pos + 1 < data.length && data.fastCodeAt(pos + 1) == quote) {
+			if (isTriple && code == quote && peek() != -1 && peek() == quote && pos + 1 < data.length && data.fastCodeAt(pos + 1) == quote) {
 				pos += 2;
 				break;
 			}
@@ -161,10 +165,6 @@ class Lexer {
 			}
 
 			buf.addChar(code);
-		}
-
-		if (pos >= data.length && (!isTriple || peek() != quote)) { // i'm scared QwQ
-			throw new Exception(ECustom('Unexpected end of input inside string at line $line'));
 		}
 
 		return StringLit(buf.toString());
