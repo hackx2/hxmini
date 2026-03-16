@@ -54,7 +54,7 @@ class Printer {
 				case DangerousInner(dangerous):
 					stringBuffer.add(dangerous);
 					stringBuffer.add("\n");
-				default: // theoretically, this not be possible so this is kinda useless...
+				default: // theoretically, this isn't possible, so it's kinda useless...
 			}
 		}
 
